@@ -18,13 +18,31 @@ Generally:
 - [ ] Cleaning utilising programmatic methods to scale for future expansion and editing of unpredictable changes
 
 ## Import Libaries
-Generally: <br>
+Generally, run : <br>
 - [ ] pip install pandas <br>, which by default will download numpy
 - [ ] pip install requests <br>
 - [ ] pip install tweepy <br>
 
 `Optional - provides Table Of Contents`
 - [ ] pip install jupyter_contrib_nbextensions
+
+## Function Definition:
+`add_files(*filename)`
+- returns file added, as a string
+- global variable: filelist
+* tracks files added so far in a list, saves time scrolling
+* can pass multiple parameters, for loop will iterate to catch all
+
+`get_values(df, col)`
+- returns value_counts, as a series
+- parameter: <dataframe>, <dataframe.column>
+* automates .value_counts() for all columns/variables in a dataframe
+* based on .values, will print out if duplicates are evident and the max number reoccuring number.
+* does not provide feedback on indexes
+
+`go_assess(df)`
+- calls get_values for each column in a dataframe
+- parameter: <dataframe>
 
 ## Steps:
 1. Twitter archive data:
@@ -40,21 +58,37 @@ Generally: <br>
 - Create two copies, one backup of original and one to be cleaned.
 
 3. Assess data:
+3.1 Iteration 1
 - Visually assess using .sample(qty), files are already in folder ready to be assessed in external programs.
-- Programmatically assess using .info, .describe, value_counts, isnull, 
+- Programmatically assess using .info, .describe, value_counts, isnull
+Quality checklist (Completeness, Validity, Accuracy, Consistency):
+- [ ] Format
+- [ ] Duplicates
+- [ ] Nulls
+- [ ] Data Types
+- [ ] Matching 
+Structure checklist
+- [ ] Single values per variable/column
+- [ ] Variables match purpose of table i.e. correct schema
 
-Observations from .head():
+
+3.1.1 Observations from .head() - Twitter data archive:
 `[V]=visual, [P]=programmatically, [O]=Optional`
-- Col0 Tweet_id:
-* [P] Integer datatype suits content
-* [P] No nulls: .info()
-* [P] No duplicates: df_twitter.tweet_id[df_twitter.tweet_id.duplicated()]
-* [P] No outliers in values: .info()
+* 17 Variables in total
+
+- Col0 tweet_id:
+[P]
+* Integer datatype suits content
+* No nulls: .info()
+* No duplicates: df_twitter.tweet_id[df_twitter.tweet_id.duplicated()]
+* No outliers in values: .info()
 
 - Col1-2 in_reply_to_status_id, in_reply_to_user_id:
-* [P][V] Float datatype precision not required
-* [P] Significant quantity of values are missing
-* [P] Possible outlier values, e+ seen in describe min values
+[P][V] 
+* Float datatype precision not required
+[P]
+* Significant quantity of values are missing
+* Possible outlier values, e+ seen in describe min values different in relation to the other values
 
 - Col3 timestamp:
 * [P][V] Contains date and timestamp that can be split into additional columns = Date, Time
@@ -68,18 +102,84 @@ Observations from .head():
 - Col5 text:
 * [V] Contains description of the tweet, details of the dog, description of the picture
 
-- Col6-7 retweet_status_id, ..._user_id
+- Col6-7 retweet_status_id, ..._user_id:
 * [V] See Col1-2 comments above, similar findings
 
-- Col8 retweet_status_timestamp
+- Col8 retweet_status_timestamp:
 * [P][V] Significant values missing
 
-- Col9
+- Col9 expanded_urls:
+* [P][V] Contains duplicates within row value
 
 - Col10, 11 rating:
+[P][V]
 * Numerator exceeds 10
 * Denominator is always 10, redundant information
 `no change required as requested`
+
+- Col12 name:
+* [P][V] .value_counts shows significant number of `names not provided` and `duplicates`
+
+3.1.2 Observations from .head() - Twitter image recognition:
+`[V]=visual, [P]=programmatically, [O]=Optional`
+[P][V]
+* Globally, there are `no null` entries for all columns
+* 12 Variables in total
+
+- Col0 tweet_id:
+[P] 
+* Integer datatype matches that found in twitter dataframe, will merge based on this primary/foreign key
+[P][V] 
+* Data is valid
+* Correct integer lengths
+* unique and conforms to a schema
+* No structure issues found.
+
+- Col1 jpg_url
+[P][V]
+* Values appear consistent
+* Variable is descriptive, however inaccurate as there are extensions not of .jpg
+* Datatype suits content
+[P]
+* Duplicates are present and seem correct as these could be retweets, possibly?
+
+- Col2 img_num
+[P][V] 
+* Appears completely
+* Unsure of purpose, information lacking
+* Max value is 4, min is 1
+* Duplicates values are expected, the data here appears to be categorical, unsure of how it is quantified/measured from initial observation
+
+- Col3 p1, Col6 p2, Col9 p3
+[P][V]
+* Mix of lower and proper case
+* Data validity/machine learning prediction accuracy issues, i.e. canoe, suit, candle are prevalent. Purpose of the file is to provide predictive images of dogs
+* Contains no white space
+* Consistency - String has a mix of lower and proper case
+
+- Col4 p1_conf, Col7 p2_conf, Col10 p3_conf
+[P][V]
+* Confidence of the p1 observation made by the program
+* Datatype suits
+* Value is not greater than 1, i.e. 100%
+
+- Col5 p1_dog, Col8 p2_dog, Col11 p3_dog
+[P][V]
+* Data validity issue with false numbers not matching those found in col3 mask, cross reference required to see what col5 false value equate to those found matched in col3
+ 
+
+3.2 Summary:
+3.2.1 Quality Issues:
+
+
+3.2.2 Structure Issues:
+
+4. Cleaning
+4.1 Twitter data
+
+4.2 image predictions
+
+
 
 ==================================================
 Upgrades:
@@ -87,13 +187,15 @@ Upgrades:
 - assess function
  - requirements: specify column (series) as functions do not apply to whole dataframe
  - argument = dataframe.seriesname
-
+- create memory release, for dataframes that have been copied
 
 Results
 - Prepare:
 1.1 wrangle_act.ipynb
 1.2 wrangle__report.pdf/html for documentation of steps
 - 
+
+
 
 ## References
 ### Udacity
@@ -104,4 +206,11 @@ Results
 - [Unofficial Jupyter Notebook Extensions](https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/install.html)
 ### Misc.
 - [JUPYTER CONVERT: HOW TO GET A TABLE OF CONTENTS](https://littledatascientist.com/2019/01/20/jupter-convert-how-to-get-a-table-of-contents/)
+- [Index Match](https://stackoverflow.com/questions/21800169/python-pandas-get-index-of-rows-which-column-matches-certain-value)
+- [Does not contain string](https://www.xspdf.com/resolution/50135853.html#:~:text=%22b%22)%5D-,Search%20for%20%22does%2Dnot%2Dcontain%22%20on%20a%20DataFrame,an%20object%20dtype.%20%3E%3E%3E)
 - [Name](http link)
+
+## Incomplete functions
+
+
+###
