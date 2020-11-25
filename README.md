@@ -5,6 +5,7 @@
 * [Setup](#setup)
 * [References](#references)
 
+
 ## Introduction
 Data in the real world and that provided for academia are completely different.
 Data provided for academia is for teaching purposes and is generally ideal with minimal corrections required to provide examples.
@@ -17,6 +18,7 @@ Generally:
 - [ ] Assessing format and quality of data, the conversions required to make analysing possible and straightforward
 - [ ] Cleaning utilising programmatic methods to scale for future expansion and editing of unpredictable changes
 
+
 ## Import Libaries
 Generally, run : <br>
 - [ ] pip install pandas <br>, which by default will download numpy
@@ -25,6 +27,7 @@ Generally, run : <br>
 
 `Optional - provides Table Of Contents`
 - [ ] pip install jupyter_contrib_nbextensions
+
 
 ## Function Definition:
 `add_files(*filename)`
@@ -44,18 +47,26 @@ Generally, run : <br>
 - calls get_values for each column in a dataframe
 - parameter: <dataframe>
 
+
 ## Steps:
-1. Twitter archive data:
+1. Gather data
+1.1 Twitter archive data:
 - Read in provided CSV, from subfolder using pandas.
 - Check file imported correctly.
 - Create two copies, one backup of original and one to be cleaned.
 
-2. Twitter Image Prediction data:
+1.2 Twitter Image Prediction data:
 - Access URL and download image predictions using Requests.
 - Binary read/write not required as image predictions would not be enclosed in a TSV file.
 - Read in TSV file into pandas dataframe.
 - Check file imported correctly.
 - Create two copies, one backup of original and one to be cleaned.
+
+1.3 Import tweet_id JSON:
+- Sign up to twitter and refer to developer documentation
+- Access twitter API, obtain token required for API
+- 
+- 
 
 3. Assess data:
 3.1 Iteration 1
@@ -166,13 +177,50 @@ Structure checklist
 - Col5 p1_dog, Col8 p2_dog, Col11 p3_dog
 [P][V]
 * Data validity issue with false numbers not matching those found in col3 mask, cross reference required to see what col5 false value equate to those found matched in col3
- 
+
+
+1.4 Define data dictionary (basic description)
+1.4.1 Twitter Archive
+tweet_id:					numeric, user identifier
+in_reply_to_status_id:		numeric, user identifier, with NaN
+in_reply_to_user_id:		numeric, user identifier, with NaN
+timestamp:					date & time, YYYY-MM-DD HH:MM:SS+GMT
+source:						string, html tag with URL
+text:						string, twitter user text
+retweet_status_id:			numeric, user identifier, with NaN
+retweet_status_user_id:		numeric, user identifier, with NaN
+retweet_status_timestamp:	numeric, user identifier, with NaN
+expanded_urls:				string, user twitter URL
+rating_numerator:			numeric, exceeding 10, extracted from text column
+rating_denominator:			numeric, value = 10 across column
+name:						string, name extract from text column
+floofer:					category, dog type extracted from text column
+doggo:						category, dog type extracted from text column
+pupper:						category, dog type extracted from text column
+puppo:						category, dog type extracted from text column
+
+1.4.2 Twitter Image Predictions
+tweet_id:					numeric, user identifier
+jpg_url:					string, image URL
+img_num:					number, corresponds to algorithm with highest probability
+p1:							string, predicted image 1 out of top 3
+p1_conf:					numeric value, algorithm confidence in recognition
+p1_dog:						boolean, image is a dog
+p2:							see p1
+p3:							see p1
+
 
 3.2 Summary:
 3.2.1 Quality Issues:
+-tweet_id data type change to string, both dataframes
+#-fill in NaN using extract from Twitter API
+-remove retweets, keep original
+-split string to remove html tag and extract on http:/* format
 
 
 3.2.2 Structure Issues:
+- timestamp split into three columns, date, time, timezone
+- categorize dog type into one column with melt()
 
 4. Cleaning
 4.1 Twitter data
