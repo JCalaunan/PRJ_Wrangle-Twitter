@@ -2,7 +2,9 @@
 
 ## Table of contents 
 * [Introduction](#introduction)
-* [Setup](#setup)
+* [Initial Setup](#setup)
+* [Global Functions](#functions)
+* [Methodology](#method)
 * [References](#references)
 
 
@@ -19,8 +21,9 @@ Generally:
 - [ ] Cleaning utilising programmatic methods to scale for future expansion and editing of unpredictable changes
 
 
-## Import Libaries
-Generally, run : <br>
+## Initial Setup
+Generally, run from conda/terminal: <br>
+`replace pip with conda for anaconda environment`
 - [ ] pip install pandas <br>, which by default will download numpy
 - [ ] pip install requests <br>
 - [ ] pip install tweepy <br>
@@ -29,7 +32,8 @@ Generally, run : <br>
 - [ ] pip install jupyter_contrib_nbextensions
 
 
-## Function Definition:
+## Global Functions
+### Definition:
 `add_files(*filename)`
 - returns file added, as a string
 - global variable: filelist
@@ -48,7 +52,7 @@ Generally, run : <br>
 - parameter: <dataframe>
 
 
-## Steps:
+## Methodology:
 1. Gather data
 1.1 Twitter archive data:
 - Read in provided CSV, from subfolder using pandas.
@@ -65,8 +69,10 @@ Generally, run : <br>
 1.3 Import tweet_id JSON:
 - Sign up to twitter and refer to developer documentation
 - Access twitter API, obtain token required for API
-- 
-- 
+- Wait for script run, read file and print finish time
+- Visually analyse text file for holistic overview
+- Contains {} to denote in correct format to be read in as JSON
+- Read in data from stored .txt file
 
 3. Assess data:
 3.1 Iteration 1
@@ -103,8 +109,7 @@ Structure checklist
 
 - Col3 timestamp:
 * [P][V] Contains date and timestamp that can be split into additional columns = Date, Time
-* [V][O] Contains +0000 at the end, research indicates its purpose is to display the timezone.
-		 Extract into timezone column.
+* [V][O] Contains +0000 at the end, research indicates its purpose is to display the timezone. Extract into timezone column.
 * Remove data past 01 Aug 2017 i.e. 2017/08/01 as requested
 
 - Col4 source:
@@ -178,9 +183,31 @@ Structure checklist
 [P][V]
 * Data validity issue with false numbers not matching those found in col3 mask, cross reference required to see what col5 false value equate to those found matched in col3
 
+3.1.3 Observations after write to .txt file - Twitter API scrape:
+[V]
+* text file shows structure of data is correct and formatted to suit JSON
+[P]
+* imports as dict file type after using json_loads
+* for loop required to sift through objects key within file
+* append and merge into data frame
+* no nulls
 
-1.4 Define data dictionary (basic description)
-1.4.1 Twitter Archive
+- Col0 tweet_id
+[P][V]
+* Data quality fixed during import of .txt file, tweet_id and tweet_idstr were available keys.
+
+- Col1 retweet_count
+[P][V]
+* Correct data type to suit values within column
+
+
+- Col2 favourite_count
+[P][V]
+* Correct data type to suit values within column
+
+
+3.1.4 Define data dictionary (basic description)
+3.1.4.1 Twitter Archive
 tweet_id:					numeric, user identifier
 in_reply_to_status_id:		numeric, user identifier, with NaN
 in_reply_to_user_id:		numeric, user identifier, with NaN
@@ -199,7 +226,7 @@ doggo:						category, dog type extracted from text column
 pupper:						category, dog type extracted from text column
 puppo:						category, dog type extracted from text column
 
-1.4.2 Twitter Image Predictions
+3.1.4.2 Twitter Image Predictions
 tweet_id:					numeric, user identifier
 jpg_url:					string, image URL
 img_num:					number, corresponds to algorithm with highest probability
@@ -209,23 +236,35 @@ p1_dog:						boolean, image is a dog
 p2:							see p1
 p3:							see p1
 
-
-3.2 Summary:
-3.2.1 Quality Issues:
--tweet_id data type change to string, both dataframes
-#-fill in NaN using extract from Twitter API
--remove retweets, keep original
--split string to remove html tag and extract on http:/* format
+3.1.4.3 Twitter API extract
+tweet_id:					numeric, user identifier
+retweet_count:				numeric, retweet count of twitter id
+favourite_count:			numeric, favourite count of twitter id
 
 
-3.2.2 Structure Issues:
-- timestamp split into three columns, date, time, timezone
-- categorize dog type into one column with melt()
+4.1 Cleaning Summary:
+4.1.1 Quality Issues:
+1. col0: tweet_id data type change to string, all dataframes
+df_twitter
+2. col3: change timestamp datatype to datetime
+3.1 col4: split string to remove html tag and extract text within
+3.2 col4: rename column heading from source to add source_app
+4. review col5 against col12 to ensure correct name transferred over
 
-4. Cleaning
-4.1 Twitter data
+6. col1,2,6,7: change datatype from float to int
+7.1 col12: change case of string to lower df_image_predictions
+7.2 col5,8,11: change case of string to lower
+7.3 col3,6,9 & 5,8,11: change to lower case
+8. col1: rename from jpg_url to img_url
+9. col2: rename from img_num to conf_tweet_img
+10. col5,8,11: regex required to extract correct name
 
-4.2 image predictions
+
+4.1.2 Structure Issues:
+1. timestamp split into three columns, date, time, timezone
+2. categorize dog type into one column with melt()
+3. denormalize dataframe to contain the relevant columns required for analysis
+3.1 twitter_data to contain all relevant twitter data
 
 
 
@@ -236,6 +275,8 @@ Upgrades:
  - requirements: specify column (series) as functions do not apply to whole dataframe
  - argument = dataframe.seriesname
 - create memory release, for dataframes that have been copied
+- add function to create compiled dataframes i.e raw and clean
+
 
 Results
 - Prepare:
@@ -252,10 +293,22 @@ Results
 ### Docs
 - [Requests documentation](https://requests.readthedocs.io/en/master/user/quickstart/)
 - [Unofficial Jupyter Notebook Extensions](https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/install.html)
+- [Twitter Developer Portal](https://developer.twitter.com/en/docs/developer-portal/overview)
+- [Reading and Writing JSON to a File in Python](https://stackabuse.com/reading-and-writing-json-to-a-file-in-python/)
+- [JSON documentation](https://docs.python-guide.org/scenarios/json/)
+- [Pandas strip string](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.strip.html)
+- [Pandas split string](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.split.html#pandas.Series.str.split)
+- [BeautifulSoup install and docs](https://pypi.org/project/beautifulsoup4/)
+- [](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rename.html)
+- []()
+
 ### Misc.
 - [JUPYTER CONVERT: HOW TO GET A TABLE OF CONTENTS](https://littledatascientist.com/2019/01/20/jupter-convert-how-to-get-a-table-of-contents/)
 - [Index Match](https://stackoverflow.com/questions/21800169/python-pandas-get-index-of-rows-which-column-matches-certain-value)
 - [Does not contain string](https://www.xspdf.com/resolution/50135853.html#:~:text=%22b%22)%5D-,Search%20for%20%22does%2Dnot%2Dcontain%22%20on%20a%20DataFrame,an%20object%20dtype.%20%3E%3E%3E)
+- [HTML <a> type Attribute](https://www.w3schools.com/tags/att_a_type.asp)
+- [Apply BeautifulSoup function to Pandas DataFrame
+](https://stackoverflow.com/questions/53189494/apply-beautifulsoup-function-to-pandas-dataframe)
 - [Name](http link)
 
 ## Incomplete functions

@@ -6,20 +6,35 @@ from timeit import default_timer as timer
 import pandas as pd
 
 from sys import argv
-df_1 = argv # import passed dataframe
+
+# import passed dataframe name
+## Improvement: create for loop to cycle through amount of argv passed through
+files = []
+for i, arg in enumerate(argv):
+    print(arg)
+    files.append(arg)
+print('End of loop')    
+print(argv, len(argv))
+#print('Starting {}.\nPick from the following files:\nfirst: {}\nsecond: {}'.format(script, first, second))
+
+# while loop to catch mis entry
+#choice = input('Type the order:\t')
+df_1 = pd.read_csv('Incoming_Files/twitter-archive-enhanced-2.csv')
+
+print('After')
 
 # Query Twitter API for each tweet in the Twitter archive and save JSON in a text file
 # These are hidden to comply with Twitter's API terms and conditions
 
-#consumer_key = 'HIDDEN'
-#consumer_secret = 'HIDDEN'
-#access_token = 'HIDDEN'
-#access_secret = 'HIDDEN'
+consumer_key = 'P3GoxMYBcGEIqeZ6uQO3nAz4w'
+consumer_secret = 'sOdImoXtutrCWmLU5hF6z2TUrDwklplFmMChEGp2ZfvbarMwZP'
+access_token = '906020437-w0vGpDZD8DyzI5EUvbdpwlNpCtw9qturBwM0jukS'
+access_secret = 'MS7Xm17kcDFVt6xDCP9Hsj2xSkmo5csiWYMnj9MTV0cfh'
 
-consumer_key = input('Enter API key:\t')
-consumer_secret = input('\nEnter API secret key:\t')
-access_token = input('\nEnter access_token:\t')
-access_secret = input('\nEnter access_secret:\t')
+#consumer_key = input('Enter API key:\t')
+#consumer_secret = input('\nEnter API secret key:\t')
+#access_token = input('\nEnter access_token:\t')
+#access_secret = input('\nEnter access_secret:\t')
 
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)
@@ -32,8 +47,6 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 # NOTE TO REVIEWER: this student had mobile verification issues so the following
 # Twitter API code was sent to this student from a Udacity instructor
 # Tweet IDs for which to gather additional data via Twitter's API
-df_1.head()
-break
 tweet_ids = df_1.tweet_id.values
 len(tweet_ids)
 
@@ -41,8 +54,11 @@ len(tweet_ids)
 count = 0
 fails_dict = {}
 start = timer()
+
+txt_file = 'tweet_json.txt'
+
 # Save each tweet's returned JSON as a new line in a .txt file
-with open('tweet_json.txt', 'w') as outfile:
+with open(txt_file, 'w') as outfile:
     # This loop will likely take 20-30 minutes to run because of Twitter's rate limit
     for tweet_id in tweet_ids:
         count += 1
@@ -56,6 +72,11 @@ with open('tweet_json.txt', 'w') as outfile:
             print("Fail")
             fails_dict[tweet_id] = e
             pass
+# Save file in subdirectory called Incoming Files
+folder = 'Incoming Files/'
+os.chdir(folder)
+print('{} has been saved in: "/{}"'.format(txt_file, folder) )
+
 end = timer()
 print(end - start)
 print(fails_dict)
