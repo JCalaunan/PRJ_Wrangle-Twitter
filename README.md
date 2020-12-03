@@ -24,7 +24,7 @@ Generally:
 ## Initial Setup
 Generally, run from conda/terminal: <br>
 `replace pip with conda for anaconda environment`
-- [ ] pip install pandas <br>, which by default will download numpy
+- [ ] pip install pandas, which by default will download numpy<br>
 - [ ] pip install requests <br>
 - [ ] pip install tweepy <br>
 
@@ -116,20 +116,23 @@ Structure checklist
 * [P][V] Contains HTML tags, extract URL
 
 - Col5 text:
-* [V] Contains description of the tweet, details of the dog, description of the picture
+[V] 
+* Contains description of the tweet, details of the dog, description of the picture, URL
 
 - Col6-7 retweet_status_id, ..._user_id:
-* [V] See Col1-2 comments above, similar findings
+[V] 
+* See Col1-2 comments above, similar findings
 
 - Col8 retweet_status_timestamp:
-* [P][V] Significant values missing
+[P][V]
+*  Significant values missing
 
 - Col9 expanded_urls:
 * [P][V] Contains duplicates within row value
 
 - Col10, 11 rating:
 [P][V]
-* Numerator exceeds 10
+* Numerator exceeds 10, values greater than 100 are present, most likely decimal points were not factored in.
 * Denominator is always 10, redundant information
 `no change required as requested`
 
@@ -142,7 +145,7 @@ Structure checklist
 * Globally, there are `no null` entries for all columns
 * 12 Variables in total
 
-- Col0 tweet_id:
+- Col0 tweet_id:<br>
 [P] 
 * Integer datatype matches that found in twitter dataframe, will merge based on this primary/foreign key
 [P][V] 
@@ -160,7 +163,7 @@ Structure checklist
 * Duplicates are present and seem correct as these could be retweets, possibly?
 
 - Col2 img_num
-[P][V] 
+[P][V]
 * Appears completely
 * Unsure of purpose, information lacking
 * Max value is 4, min is 1
@@ -241,6 +244,9 @@ tweet_id:					numeric, user identifier
 retweet_count:				numeric, retweet count of twitter id
 favourite_count:			numeric, favourite count of twitter id
 
+3.2 Iteration 2
+* Size of the three archives differ and are inconsistent. Join dataframes on lowest number of tweet_id's.
+
 
 4.1 Cleaning Summary:
 4.1.1 Quality Issues:
@@ -249,21 +255,25 @@ df_twitter
 2. col3: change timestamp datatype to datetime
 3.1 col4: split string to remove html tag and extract text within
 3.2 col4: rename column heading from source to add source_app
-4. review col5 against col12 to ensure correct name transferred over
+4. col1,2,6,7: change datatype from float to string
+5.1 remove whitespaces in string/object columns
+9. review col12 to ensure correct name transferred over
+10. check numerator rating against text and valid/correct
 
-6. col1,2,6,7: change datatype from float to int
-7.1 col12: change case of string to lower df_image_predictions
-7.2 col5,8,11: change case of string to lower
-7.3 col3,6,9 & 5,8,11: change to lower case
-8. col1: rename from jpg_url to img_url
-9. col2: rename from img_num to conf_tweet_img
-10. col5,8,11: regex required to extract correct name
+twitter_image_predictor
+5.2 remove whitespaces in string/object columns
+6. col3,6,9: change to lower case
+7. col1: rename from jpg_url to img_url
+8. col2: rename from img_num to conf_tweet_img
+
+twitter_api
+5.3 remove whitespaces in string/object columns
 
 
 4.1.2 Structure Issues:
 1. timestamp split into three columns, date, time, timezone
-2. categorize dog type into one column with melt()
-3. denormalize dataframe to contain the relevant columns required for analysis
+2. categorize dog type into one column
+3. merge, denormalize dataframe to contain the relevant columns required for analysis
 3.1 twitter_data to contain all relevant twitter data
 
 
@@ -290,6 +300,7 @@ Results
 ### Udacity
 - [Udacity DAND Core 4 Lesson 2 (Gathering data), 12. Source: Downloading Files from the Internet](https://classroom.udacity.com/nanodegrees/nd002/parts/af503f34-9646-4795-a916-190ebc82cb4a/modules/86c36b91-055f-4970-8462-864f332c2ebb/lessons/96402d84-c99d-4982-9edf-2430ef30d222/concepts/ed908f34-ce67-44c0-acb1-d81abd5d9e37)
 - [Udacity DAND Extracurricular 4. Lesson 6 (Scripting) 17. Reading and Writing Files](https://classroom.udacity.com/nanodegrees/nd002/parts/762c0200-e8a7-425b-be49-7080cc533c7d/modules/d2268785-db9d-4aaa-ab44-afec79099d7d/lessons/62fec647-9f0e-4551-8752-2139e2d4eb5f/concepts/43991399-3df7-48cf-a10c-792921e1b6bf)
+- [Dog types into one column](https://knowledge.udacity.com/questions/389519)
 ### Docs
 - [Requests documentation](https://requests.readthedocs.io/en/master/user/quickstart/)
 - [Unofficial Jupyter Notebook Extensions](https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/install.html)
@@ -300,7 +311,8 @@ Results
 - [Pandas split string](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.split.html#pandas.Series.str.split)
 - [BeautifulSoup install and docs](https://pypi.org/project/beautifulsoup4/)
 - [](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rename.html)
-- []()
+- [Pandas drop columns](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.drop.html?highlight=drop#pandas.Series.drop)
+- [Pandas extract str based on regex pattern](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.extract.html)
 
 ### Misc.
 - [JUPYTER CONVERT: HOW TO GET A TABLE OF CONTENTS](https://littledatascientist.com/2019/01/20/jupter-convert-how-to-get-a-table-of-contents/)
@@ -309,6 +321,7 @@ Results
 - [HTML <a> type Attribute](https://www.w3schools.com/tags/att_a_type.asp)
 - [Apply BeautifulSoup function to Pandas DataFrame
 ](https://stackoverflow.com/questions/53189494/apply-beautifulsoup-function-to-pandas-dataframe)
+- [Pandas replace strings](https://stackoverflow.com/questions/27060098/replacing-few-values-in-a-pandas-dataframe-column-with-another-value)
 - [Name](http link)
 
 ## Incomplete functions
