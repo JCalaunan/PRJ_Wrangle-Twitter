@@ -26,15 +26,10 @@ print('After')
 # Query Twitter API for each tweet in the Twitter archive and save JSON in a text file
 # These are hidden to comply with Twitter's API terms and conditions
 
-consumer_key = 'P3GoxMYBcGEIqeZ6uQO3nAz4w'
-consumer_secret = 'sOdImoXtutrCWmLU5hF6z2TUrDwklplFmMChEGp2ZfvbarMwZP'
-access_token = '906020437-w0vGpDZD8DyzI5EUvbdpwlNpCtw9qturBwM0jukS'
-access_secret = 'MS7Xm17kcDFVt6xDCP9Hsj2xSkmo5csiWYMnj9MTV0cfh'
-
-#consumer_key = input('Enter API key:\t')
-#consumer_secret = input('\nEnter API secret key:\t')
-#access_token = input('\nEnter access_token:\t')
-#access_secret = input('\nEnter access_secret:\t')
+consumer_key = input('Enter API key:\t')
+consumer_secret = input('\nEnter API secret key:\t')
+access_token = input('\nEnter access_token:\t')
+access_secret = input('\nEnter access_secret:\t')
 
 auth = OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_secret)

@@ -30,6 +30,7 @@ Generally, run from conda/terminal: <br>
 
 `Optional - provides Table Of Contents`
 - [ ] pip install jupyter_contrib_nbextensions
+- [ ] pip install -U pandas-profiling
 
 
 ## Global Functions
@@ -247,6 +248,8 @@ favourite_count:			numeric, favourite count of twitter id
 3.2 Iteration 2
 * Size of the three archives differ and are inconsistent. Join dataframes on lowest number of tweet_id's.
 
+3.3 Iteration 3
+* Names were incorrect and needed to be extracted from text column
 
 4.1 Cleaning Summary:
 4.1.1 Quality Issues:
@@ -259,6 +262,8 @@ df_twitter
 5.1 remove whitespaces in string/object columns
 9. review col12 to ensure correct name transferred over
 10. check numerator rating against text and valid/correct
+11. remove retweets, indicated by RT @ in text column, retweet status id and in reply to id
+
 
 twitter_image_predictor
 5.2 remove whitespaces in string/object columns
@@ -286,7 +291,7 @@ Upgrades:
  - argument = dataframe.seriesname
 - create memory release, for dataframes that have been copied
 - add function to create compiled dataframes i.e raw and clean
-
+- container to list all functions present and the arguments required
 
 Results
 - Prepare:
@@ -302,7 +307,7 @@ Results
 - [Udacity DAND Extracurricular 4. Lesson 6 (Scripting) 17. Reading and Writing Files](https://classroom.udacity.com/nanodegrees/nd002/parts/762c0200-e8a7-425b-be49-7080cc533c7d/modules/d2268785-db9d-4aaa-ab44-afec79099d7d/lessons/62fec647-9f0e-4551-8752-2139e2d4eb5f/concepts/43991399-3df7-48cf-a10c-792921e1b6bf)
 - [Dog types into one column](https://knowledge.udacity.com/questions/389519)
 ### Docs
-- [Requests documentation](https://requests.readthedocs.io/en/master/user/quickstart/)
+- [Requests doc](https://requests.readthedocs.io/en/master/user/quickstart/)
 - [Unofficial Jupyter Notebook Extensions](https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/install.html)
 - [Twitter Developer Portal](https://developer.twitter.com/en/docs/developer-portal/overview)
 - [Reading and Writing JSON to a File in Python](https://stackabuse.com/reading-and-writing-json-to-a-file-in-python/)
@@ -313,6 +318,10 @@ Results
 - [](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.rename.html)
 - [Pandas drop columns](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.drop.html?highlight=drop#pandas.Series.drop)
 - [Pandas extract str based on regex pattern](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.str.extract.html)
+- [Read to CSV](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_csv.html)
+- [Python path create directory doc](https://docs.python.org/3/library/pathlib.html#pathlib.Path.mkdir)
+- [Pandas profiling documentation](https://pandas-profiling.github.io/pandas-profiling/docs/master/rtd/pages/installation.html)
+- [SweetViz](https://pypi.org/project/sweetviz/)
 
 ### Misc.
 - [JUPYTER CONVERT: HOW TO GET A TABLE OF CONTENTS](https://littledatascientist.com/2019/01/20/jupter-convert-how-to-get-a-table-of-contents/)
@@ -322,9 +331,22 @@ Results
 - [Apply BeautifulSoup function to Pandas DataFrame
 ](https://stackoverflow.com/questions/53189494/apply-beautifulsoup-function-to-pandas-dataframe)
 - [Pandas replace strings](https://stackoverflow.com/questions/27060098/replacing-few-values-in-a-pandas-dataframe-column-with-another-value)
+- [Ignoring NaNs with str.contains](https://stackoverflow.com/questions/28311655/ignoring-nans-with-str-contains)
+- [Python regex - visual guide](https://www.debuggex.com/#cheatsheet)
 - [Name](http link)
 
 ## Incomplete functions
 
 
-###
+## Problems
+SweetViz compare
+TypeError: 
+
+Cannot convert series 'tweet_id' in COMPARED from its TYPE_TEXT
+to the desired type TYPE_NUMERIC.
+Check documentation for the possible coercion possibilities.
+POSSIBLE RESOLUTIONS:
+ -> Use the feat_cfg parameter (see docs on git) to force the column to be a specific type (may or may not help depending on the type)
+ -> Modify the source data to be more explicitly of a single specific type
+ -> This could also be caused by a feature type mismatch between source and compare dataframes:
+    In that case, make sure the source and compared dataframes are compatible.
