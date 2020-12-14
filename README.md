@@ -340,13 +340,5 @@ Results
 
 ## Problems
 SweetViz compare
-TypeError: 
-
-Cannot convert series 'tweet_id' in COMPARED from its TYPE_TEXT
-to the desired type TYPE_NUMERIC.
-Check documentation for the possible coercion possibilities.
-POSSIBLE RESOLUTIONS:
- -> Use the feat_cfg parameter (see docs on git) to force the column to be a specific type (may or may not help depending on the type)
- -> Modify the source data to be more explicitly of a single specific type
- -> This could also be caused by a feature type mismatch between source and compare dataframes:
-    In that case, make sure the source and compared dataframes are compatible.
+PROBLEM:
+ -> Raw and Clean dataframes required to be same shape.
