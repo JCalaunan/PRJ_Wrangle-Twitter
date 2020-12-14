@@ -333,7 +333,7 @@ Results
 - [Pandas replace strings](https://stackoverflow.com/questions/27060098/replacing-few-values-in-a-pandas-dataframe-column-with-another-value)
 - [Ignoring NaNs with str.contains](https://stackoverflow.com/questions/28311655/ignoring-nans-with-str-contains)
 - [Python regex - visual guide](https://www.debuggex.com/#cheatsheet)
-- [Name](http link)
+- [Show Tableau dashboard in Jupyter Notebook](https://medium.com/@ikekramer/tableau-visual-in-jupyter-notebook-7b9faf60e8fd)
 
 ## Incomplete functions
 
